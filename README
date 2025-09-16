@@ -1,0 +1,22 @@
+# { Vite + React + Typescript + Bootstrap } base project
+
+## Prerequisites
+
+`$ node -v`
+`v19.6.0`
+
+## Create project
+
+npm create vite@4.1.0
+
+- React
+- Typescript
+
+## Install dependencies
+
+cd react-typescript-base-app
+npm install
+
+## Run project
+
+npm run dev

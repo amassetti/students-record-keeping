@@ -1,34 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
-import Message from './components/Message'
+import { Routes, Route, Link } from 'react-router-dom'
+import Home from './pages/Home'
+import Login from './pages/Login'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React + Typescript + Bootstrap base app</h1>
-      <div >
-        <button type="button" className="btn btn-outline-primary" onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <Message message='This is a test message'/>
+    <div className="container">
+      <nav className="my-3">
+        <Link to="/" className="btn btn-outline-primary me-2">Home</Link>
+        <Link to="/login" className="btn btn-outline-secondary">Login</Link>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
     </div>
   )
 }

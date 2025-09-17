@@ -8,22 +8,22 @@ const Login = () => {
   const [password, setPassword] = useState("");
   //const [user, setUser] = useState<User>();
 
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const user: User = {
+    const userToLogin: User = {
       id: 0,
       username: email,
       password: password
     }
 
     // For now, any email/password works
-    login(user);
+    login(userToLogin);
 
-    navigate("/dashboard");
+    if (user) navigate("/dashboard");
     
   };
 

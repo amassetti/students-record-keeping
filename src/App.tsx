@@ -12,7 +12,7 @@ function App() {
     <div className="container">
       <nav className="my-3">
         <Link to="/" className="btn btn-outline-primary me-2">Home</Link>
-        <Link to="/login" className="btn btn-outline-secondary me-2">Login</Link>
+        {!user && <Link to="/login" className="btn btn-outline-secondary me-2">Login</Link>}
         <Link to="/dashboard" className="btn btn-outline-success me-2">Dashboard</Link>
         {user && <button onClick={logout} className="btn btn-danger">Logout</button>}
       </nav>

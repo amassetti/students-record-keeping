@@ -23,8 +23,9 @@ class UserService {
         console.log(`Validating user: ${JSON.stringify(user)}`);
 
         try {
-            const res = await apiClient.get<User>(`/users/${user.id}`);
-            return res.data.password === user.password;
+            const res = await apiClient.post(`/users`, user);
+            //const res = await apiClient.get<User>(`/users/${user.id}`);
+            return res.status === 200;
         } catch (err) {
             console.error("Validation failed", err);
             return false;

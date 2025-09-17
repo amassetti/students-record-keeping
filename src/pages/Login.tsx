@@ -1,20 +1,30 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { User } from "../services/userService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  //const [user, setUser] = useState<User>();
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const user: User = {
+      id: 0,
+      username: email,
+      password: password
+    }
+
     // For now, any email/password works
-    login(email);
+    login(user);
 
     navigate("/dashboard");
+    
   };
 
   return (

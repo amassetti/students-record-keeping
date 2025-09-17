@@ -1,18 +1,26 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import userService, { User } from "../services/userService";
 
 interface AuthContextType {
-  user: string | null;
-  login: (username: string) => void;
+  user: User | null;
+  login: (user: User) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
-  const login = (username: string) => {
-    setUser(username);
+  const login = async (user: User) => {
+    const isValidUser = await userService.validateUser(user);
+    console.log(`Is valid user: ${isValidUser}`);
+    if (isValidUser) {
+        setUser(user);
+    } else {
+        // handle error
+        setUser(null);
+    }
   };
 
   const logout = () => {

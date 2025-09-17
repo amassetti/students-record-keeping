@@ -40,6 +40,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+frontend/node_modules/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -155,3 +156,48 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Backend
+# Byte-compiled / optimized / DLL files
+backend/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
+
+# C extensions
+backend/*.so
+
+# Distribution / packaging
+backend/.Python
+backend/build/
+backend/dist/
+backend/*.egg-info/
+backend/.env
+backend/.venv/
+backend/venv/
+backend/env/
+
+# Editors
+backend/.idea/
+backend/.vscode/
+backend/.spyderproject
+backend/.spyproject
+*~
+#*#
+
+# Logs
+backend/*.log
+
+# Tests and Coverage
+backend/.coverage
+backend/htmlcov/
+
+# Documentation
+backend/docs/_build/
+
+# Jupyter Notebook
+backend/.ipynb_checkpoints
+
+# PDM
+backend/.pdm.toml
+backend/.pdm-python

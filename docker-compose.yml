@@ -1,0 +1,32 @@
+name: gti-record-keeping
+services:
+  frontend:
+    build: ./gti-frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+  
+  backend:
+    build: ./gti-service-layer
+    ports:
+      - 8080:8080
+    environment:
+      - spring.profiles.active=docker
+    depends_on:
+      - db
+
+  db:
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: gti_record_keeping_v2
+      MYSQL_USER: gti_record_keeping
+      MYSQL_PASSWORD: Asd
+    volumes:
+      - gti-record-keeping:/var/lib/mysql
+
+volumes:
+  gti-record-keeping:

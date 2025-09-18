@@ -1,1 +1,11 @@
 # Student record system
+
+# project structure
+
+- backend: python
+- frontend: React + Typescript
+- database: db scripts
+
+# docker compose
+
+TODO

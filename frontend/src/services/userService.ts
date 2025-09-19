@@ -2,9 +2,10 @@
 import apiClient from "./apiClient";
 
 export interface User {
-    id: number,
-    username: string,
-    password: string
+    id: number | null;
+    username: string | null;
+    password: string | null;
+    role: string | null;
 }
 
 class UserService {
@@ -19,19 +20,34 @@ class UserService {
         return { request, cancel: () => controller.abort() }
     }
 
-    async validateUser(user: User): Promise<boolean> {
+    async validateUser(user: User): Promise<User> {
         console.log(`Validating user: ${JSON.stringify(user)}`);
 
         try {
             const res = await apiClient.post(`/users`, user);
             //const res = await apiClient.get<User>(`/users/${user.id}`);
-            return res.status === 200;
+            const dbUser: User = res.data;
+            console.log(dbUser);
+            return dbUser;
         } catch (err) {
             console.error("Validation failed", err);
-            return false;
+            const emptyUser: User = {id: null, username: null, password: null, role: null};
+            return emptyUser;
         }
     }
 
+}
+
+export function isAdmin(user: User | null) {
+    console.log(user);
+    if (!user) return false;
+    return user.role === 'ROLE_ADMIN';
+}
+
+export function isTeacher(user: User | null) {
+    console.log(user);
+    if (!user) return false;
+    return user.role === 'ROLE_TEACHER';
 }
 
 export default new UserService();

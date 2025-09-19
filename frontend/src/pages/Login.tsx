@@ -17,7 +17,8 @@ const Login = () => {
     const userToLogin: User = {
       id: 0,
       username: email,
-      password: password
+      password: password,
+      role: null
     }
 
     // For now, any email/password works

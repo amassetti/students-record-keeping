@@ -13,10 +13,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const login = async (user: User) => {
-    const isValidUser = await userService.validateUser(user);
+    const validatedUser: User = await userService.validateUser(user);
+    const isValidUser = validatedUser.username !== null
     console.log(`Is valid user: ${isValidUser}`);
     if (isValidUser) {
-        setUser(user);
+        setUser(validatedUser);
     } else {
         // handle error
         setUser(null);

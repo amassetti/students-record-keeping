@@ -1,5 +1,5 @@
 import mysql.connector
-from app.models.user import User
+from app.models.user import User, UserLogin
 
 def get_db_connection():
     # connect
@@ -38,7 +38,12 @@ def get_user_by_username(username: str):
 
     # run a query with parameterized SQL to prevent SQL injection
     cursor.execute(
-        "SELECT user_id, username, password, role_id FROM user WHERE username = %s",
+        '''
+        SELECT u.user_id, u.username, u.password, r.role_code
+        FROM user u, role r
+        WHERE u.role_id = r.role_id
+        AND username = %s;
+        ''',
         (username,)
     )
 
@@ -49,5 +54,5 @@ def get_user_by_username(username: str):
     conn.close()
 
     if row:
-        return User(id=row[0], username=row[1], password=row[2])
+        return UserLogin(id=row[0], username=row[1], password=row[2], role=row[3])
     return None

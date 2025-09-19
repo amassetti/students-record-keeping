@@ -16,6 +16,7 @@ const NavBar = ({ user, logout } : Props) => {
         <Link to="/dashboard" className="btn btn-outline-success me-2">Dashboard</Link>
         { isAdmin(user) && <Link to="/adm-students" className="btn btn-outline-success me-2">Admin Students</Link> }
         { isTeacher(user) && <Link to="/tch-students" className="btn btn-outline-success me-2">Teacher Students</Link> }
+        { isTeacher(user) && <Link to="/tch-reports" className="btn btn-outline-success me-2">Teacher Reports</Link> }
         { user && <button onClick={logout} className="btn btn-danger">Logout</button> }
       </nav>
     );

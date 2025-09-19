@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
 import AdmStudents from "./pages/admin/AdmStudents";
 import TchStudents from "./pages/teacher/TchStudent";
+import TchReports from "./pages/teacher/TchReports";
 
 function App() {
   const { user, logout } = useAuth();
@@ -42,6 +43,15 @@ function App() {
             </ProtectedRoute>
           } 
         />
+        <Route 
+          path="/tch-reports" 
+          element={
+            <ProtectedRoute>
+              <TchReports />
+            </ProtectedRoute>
+          } 
+        />
+
       </Routes>
     </div>
   );

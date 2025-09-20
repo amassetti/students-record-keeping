@@ -13,7 +13,7 @@ def mock_user():
 
 
 def test_login_success(mock_user):
-    with patch("app.routers.users.get_user_by_username", return_value=mock_user):
+    with patch("app.routers.users.check_user", return_value=mock_user):
         response = client.post(
             "/users/",
             json={"id":0, "username": "testuser", "password": "secret"}
@@ -24,8 +24,8 @@ def test_login_success(mock_user):
         assert data["username"] == "testuser"
 
 
-def test_login_invalid_password(mock_user):
-    with patch("app.routers.users.get_user_by_username", return_value=mock_user):
+def test_login_invalid_password():
+    with patch("app.routers.users.check_user", return_value=None):
         response = client.post(
             "/users/",
             json={"id":0, "username": "testuser", "password": "wrongpass"}
@@ -34,7 +34,7 @@ def test_login_invalid_password(mock_user):
         assert response.json() == {"detail": "Invalid username or password"}
 
 def test_login_user_not_found():
-    with patch("app.routers.users.get_user_by_username", return_value=None):
+    with patch("app.routers.users.check_user", return_value=None):
         response = client.post(
             "/users/",
             json={"id":0, "username": "wrong_user", "password": "secret"}
@@ -43,7 +43,7 @@ def test_login_user_not_found():
         assert response.json() == {"detail": "Invalid username or password"}
 
 def test_user_is_empty(mock_user):
-    with patch("app.routers.users.get_user_by_username", return_value=mock_user):
+    with patch("app.routers.users.check_user", return_value=mock_user):
         response = client.post(
             "/users/",
             json={}

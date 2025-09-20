@@ -1,16 +1,5 @@
-import mysql.connector
 from app.models.user import User, UserLogin
-
-def get_db_connection():
-    # connect
-    conn = mysql.connector.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="gti_record_keeping",
-        password="Asd$123!",
-        database="gti_record_keeping_v2"
-    )
-    return conn
+from app.db.mysql_db import get_db_connection
 
 def get_users():
     conn = get_db_connection()
@@ -31,7 +20,7 @@ def get_users():
 
     return users
 
-def get_user_by_username(username: str):
+def get_user_by_username(username: str) -> UserLogin | None:
     print(f"Searching user with username {username}")
     conn = get_db_connection()
     cursor = conn.cursor()

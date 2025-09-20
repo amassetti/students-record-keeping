@@ -1,7 +1,36 @@
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import studentService, { Student } from "../../services/studentService";
+import { CanceledError } from "../../services/apiClient";
 
 const AdmStudents = () => {
   const { user } = useAuth();
+  const [ students, setStudents ] = useState<Student[]>([]);
+  const [ error, setError ] = useState('');
+  const [ isLoading, setLoading ] = useState(false);
+
+  useEffect( () => {
+    setLoading(true);
+    const {request, cancel} = studentService.getStudents("filter");
+    request
+      .then( res => {
+        setStudents(res.data);
+        setLoading(false);
+      })
+      .catch( err => {
+        if (err instanceof CanceledError) return;
+        setError(err.message);
+        setLoading(false);
+      });
+
+    // cleanup fn
+    return () => cancel();
+
+  }, []);
+
+  const handleSubmit = () => {
+    console.log("Handling form submission");
+  }
 
   return (
     <div>
@@ -11,39 +40,31 @@ const AdmStudents = () => {
         <div className="container-fluid">
           <form className="d-flex" role="search">
             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button className="btn btn-outline-success" type="submit">Search</button>
+            <button className="btn btn-outline-success" onClick={handleSubmit}>Search</button>
           </form>
         </div>
       </nav>
 
-      <table className="table table-striped">
+      <table className="table table-striped table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Email</th>
+            <th scope="col">PPSN</th>
+            <th scope="col">Course</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+          { students.map( (student, index) => 
+          <tr key={`tr-${index}`}>
+            <th scope="row">{student.id}</th>
+            <td>{`${student.last_name}, ${student.first_name}`}</td>
+            <td>{student.email}</td>
+            <td>{student.ppsn}</td>
+            <td>{student.course_code}</td>
           </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>John</td>
-            <td>Doe</td>
-            <td>@social</td>
-          </tr>
+          ) }
         </tbody>
       </table>
     </div>

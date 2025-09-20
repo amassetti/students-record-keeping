@@ -20,9 +20,9 @@ def get_students(filter: str):
         FROM student s, student_course sc, course c
         WHERE sc.student_id = s.student_id
         AND   sc.course_id = c.course_id
-        AND   sc.last_name = %s;
+        AND   %s = %s;
         ''',
-        (filter,)
+        (filter, filter)
     )
 
     # fetch results

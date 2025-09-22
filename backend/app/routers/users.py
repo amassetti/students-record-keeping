@@ -17,7 +17,7 @@ def validate_user(user: User):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(e))
     except RuntimeError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-    except Exception:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unexpected error")
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
     return {"message": "Login successful", "username": user_from_db.username, "role": user_from_db.role}

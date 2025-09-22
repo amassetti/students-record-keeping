@@ -7,6 +7,6 @@ class Student(BaseModel):
     last_name: str
     email: str
     ppsn: str
-    course_code: str
-    course_name: str
+    course_code: str | None
+    course_name: str | None
 

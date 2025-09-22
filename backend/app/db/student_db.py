@@ -17,13 +17,17 @@ def get_students(filter: str, offset: int, limit: int):
             s.last_name, 
             s.email,
             s.ppsn
-        FROM student s, student_course sc, course c
-        WHERE sc.student_id = s.student_id
-        AND   sc.course_id = c.course_id
-        AND   %s = %s
+        FROM student s
+        LEFT JOIN student_course sc
+			ON s.student_id = sc.student_id
+        LEFT JOIN course c
+			ON sc.course_id = c.course_id
+		WHERE ( s.first_name LIKE %s
+        OR s.last_name LIKE %s)
+        OR %s IS NOT NULL
         LIMIT %s OFFSET %s;
         ''',
-        (filter, filter, limit, offset)
+        (filter, filter, filter, limit, offset)
     )
 
     # fetch results

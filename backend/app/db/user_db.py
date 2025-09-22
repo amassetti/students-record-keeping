@@ -49,4 +49,5 @@ def get_user_by_username(username: str) -> UserLogin | None:
         return None
     except mysql.connector.Error as e:
         # Raise the error so the service layer can handle it
+        print(f"Database error: {str(e)}")
         raise Exception(f"Database error: {str(e)}")

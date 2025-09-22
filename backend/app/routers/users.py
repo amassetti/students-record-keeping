@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from app.models.user import User
 from app.services.user_service import check_user
 
@@ -9,8 +9,15 @@ def validate_user(user: User):
     if not user:
         raise HTTPException(status_code=400, detail="Bad request")
 
-    user_from_db = check_user(username= user.username, password=user.password)
-    if not user_from_db:
-        raise HTTPException(status_code=401, detail="Invalid username or password")
+    try:
+        user_from_db = check_user(username= user.username, password=user.password)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(e))
+    except PermissionError as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(e))
+    except RuntimeError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unexpected error")
 
     return {"message": "Login successful", "username": user_from_db.username, "role": user_from_db.role}

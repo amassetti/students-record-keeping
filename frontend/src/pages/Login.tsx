@@ -6,6 +6,7 @@ import { User } from "../services/userService";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   //const [user, setUser] = useState<User>();
 
   const { user, login } = useAuth();
@@ -54,6 +55,7 @@ const Login = () => {
         </div>
         <button type="submit" className="btn btn-primary">Login</button>
       </form>
+      {error && <p className="text-danger">{error}</p>}
     </div>
   );
 };

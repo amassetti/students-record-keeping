@@ -1,7 +1,7 @@
 from app.models.student import Student
 from app.db.mysql_db import get_db_connection
 
-def get_students(filter: str):
+def get_students(filter: str, offset: int, limit: int):
     print(f"Searching students with filter {filter}")
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -20,9 +20,10 @@ def get_students(filter: str):
         FROM student s, student_course sc, course c
         WHERE sc.student_id = s.student_id
         AND   sc.course_id = c.course_id
-        AND   %s = %s;
+        AND   %s = %s
+        LIMIT %s OFFSET %s;
         ''',
-        (filter, filter)
+        (filter, filter, limit, offset)
     )
 
     # fetch results

@@ -14,7 +14,21 @@ def test_check_user_ok(mock_user):
         assert user.username == mock_user.username
         assert user.password == mock_user.password
 
-def test_check_user_wrong():
+def test_check_user_not_found():
     with patch("app.services.user_service.get_user_by_username", return_value=None):
-        user = check_user("any_user", "any_password")
-        assert user is None
+        # assert that check_user raises ValueError
+        with pytest.raises(ValueError) as exc_info:
+            check_user("any_user", "any_password")
+        
+        # optionally check the exception message
+        assert str(exc_info.value) == "User not found"
+
+
+def test_check_user_wrong_password(mock_user):
+    with patch("app.services.user_service.get_user_by_username", return_value=mock_user):
+        # assert that check_user raises ValueError
+        with pytest.raises(PermissionError) as exc_info:
+            check_user("testuser", "wrong_password")
+        
+        # optionally check the exception message
+        assert str(exc_info.value) == "Invalid password"

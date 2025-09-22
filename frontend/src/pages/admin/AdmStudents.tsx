@@ -36,6 +36,7 @@ const AdmStudents = () => {
     <div>
       <h2>AdmStudents</h2>
       <p>Welcome, {user?.username}!</p>
+      {error && <p className="text-danger">{error}</p>}
       <nav className="navbar bg-body-tertiary">
         <div className="container-fluid">
           <form className="d-flex" role="search">

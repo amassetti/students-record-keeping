@@ -2,6 +2,7 @@ from fastapi import APIRouter, Query
 from app.models.student import Student
 from app.services.student_service import get_students_by_filter
 from typing import Optional
+import math
 
 router = APIRouter(prefix="/students", tags=["students"])
 
@@ -11,4 +12,12 @@ def get_students(
     page: int = Query(1, ge=1),
     limit: int = Query(20, ge=1, le=100)
 ):
-    return get_students_by_filter(filter, page, limit)
+    students = get_students_by_filter(filter, page, limit);
+    total_students = len(students)
+    # TODO: fix totalPages and total students
+    return {
+        "data": students,
+        "total": total_students,
+        "page": page,
+        "totalPages": math.ceil(total_students / limit)
+    }

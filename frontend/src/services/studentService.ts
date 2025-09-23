@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import apiClient, { PaginatedResponse } from "./apiClient";
 
 export interface Student {
     id: number;
@@ -12,10 +12,10 @@ export interface Student {
 
 class StudentService {
 
-    getStudents(filter: string) {
+    getStudents(filter: string, page: number, limit: number) {
         const controller = new AbortController();
 
-        const request = apiClient.get<Student[]>(`/students?filter=${filter}`, {
+        const request = apiClient.get<PaginatedResponse<Student>>(`/students?filter=${filter}&page=${page}&limit=${limit}`, {
             signal: controller.signal
         });
 

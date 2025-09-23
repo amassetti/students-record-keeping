@@ -37,5 +37,7 @@ def test_get_students(mock_students):
 
         assert response.status_code == 200
         data = response.json()
-        assert len(data) == 2
+        assert len(data['data']) == 2
+        assert data['total'] == 2
+        
 

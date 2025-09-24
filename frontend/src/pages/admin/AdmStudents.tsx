@@ -3,6 +3,8 @@ import { useAuth } from "../../context/AuthContext";
 import studentService, { Student } from "../../services/studentService";
 import { CanceledError } from "../../services/apiClient";
 import TablePagination from "../../components/TablePagination";
+import Spinner from "../../components/Spinner";
+import SmallButton, { ButtonType } from "../../components/SmallButton";
 
 const LIMIT = 10;
 
@@ -48,6 +50,16 @@ const AdmStudents = () => {
     setPage(pageNumber);
   }
 
+  const handleDelete = (studentId: number) => {
+    // TODO: implement
+    console.log(`Deleting student ${studentId}`);
+  }
+
+  const handleEdit = (studentId: number) => {
+    // TODO: implement
+    console.log(`Editing student ${studentId}`);
+  }
+
   return (
     <div>
       <h2>AdmStudents</h2>
@@ -62,6 +74,8 @@ const AdmStudents = () => {
         </div>
       </nav>
 
+      <Spinner isLoading={isLoading} />
+
       <table className="table table-striped table-hover">
         <thead>
           <tr>
@@ -70,6 +84,7 @@ const AdmStudents = () => {
             <th scope="col">Email</th>
             <th scope="col">PPSN</th>
             <th scope="col">Course</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -80,6 +95,10 @@ const AdmStudents = () => {
             <td>{student.email}</td>
             <td>{student.ppsn}</td>
             <td>{student.course_code}</td>
+            <td>
+              <SmallButton btnType={ButtonType.BLUE} text="E" title={`Edit ${student.first_name}`} enabled={true} onClick={() => handleEdit(student.id)}/>
+              <SmallButton btnType={ButtonType.RED} text="X" title={`Delete ${student.first_name}`} enabled={(student.course_code) ? false : true} onClick={() => handleDelete(student.id)}/>
+            </td>
           </tr>
           ) }
         </tbody>

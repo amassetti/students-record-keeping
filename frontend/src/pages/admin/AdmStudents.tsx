@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import studentService, { Student } from "../../services/studentService";
 import { CanceledError } from "../../services/apiClient";
+import TablePagination from "../../components/TablePagination";
 
 const LIMIT = 10;
 
@@ -84,15 +85,7 @@ const AdmStudents = () => {
         </tbody>
       </table>
 
-      <nav aria-label="Page navigation">
-        <ul className="pagination">
-          <li className="page-item"><a className="page-link" href="#" onClick={() => handleChangePage(page-1)}>Previous</a></li>
-          <li className="page-item"><a className={ page === 1 ? "page-link active" : "page-link"} href="#" onClick={() => handleChangePage(1)}>1</a></li>
-          <li className="page-item"><a className={ page === 2 ? "page-link active" : "page-link"} href="#" onClick={() => handleChangePage(2)}>2</a></li>
-          <li className="page-item"><a className={ page === 3 ? "page-link active" : "page-link"} href="#" onClick={() => handleChangePage(3)}>3</a></li>
-          <li className="page-item"><a className="page-link" href="#" onClick={() => handleChangePage(page+1)}>Next</a></li>
-        </ul>
-    </nav>
+      <TablePagination page={page} totalPages={totalPages} handleChangePage={handleChangePage}/>
 
     </div>
   );

@@ -10,3 +10,6 @@ def get_db_connection():
         database="gti_record_keeping_v2"
     )
     return conn
+
+# Re-export connector
+connector = mysql.connector

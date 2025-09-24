@@ -30,7 +30,7 @@ def mock_students():
     ]
 
 def test_get_students(mock_students):
-    with patch("app.routers.students.get_students_by_filter", return_value=mock_students):
+    with patch("app.routers.students.get_students_by_filter", return_value=(2, mock_students)):
         response = client.get(
             "/students?filter=Pepe"
         )

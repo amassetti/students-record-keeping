@@ -12,9 +12,8 @@ def get_students(
     page: int = Query(1, ge=1),
     limit: int = Query(20, ge=1, le=100)
 ):
-    students = get_students_by_filter(filter, page, limit);
-    total_students = len(students)
-    # TODO: fix totalPages and total students
+    (total_students, students) = get_students_by_filter(filter, page, limit);
+
     return {
         "data": students,
         "total": total_students,

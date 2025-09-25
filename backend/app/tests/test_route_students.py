@@ -41,3 +41,10 @@ def test_get_students(mock_students):
         assert data['total'] == 2
         
 
+def test_delete_student():
+    with patch("app.routers.students.delete_student", return_value=1):
+        response = client.delete(
+            "/students/1"
+        )
+
+        assert response.status_code == 200

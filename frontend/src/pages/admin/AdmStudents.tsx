@@ -43,7 +43,6 @@ const AdmStudents = () => {
   }
 
   const handleChangePage = (pageNumber: number) => {
-    console.log(`Handling change page to ${pageNumber}. Current ${page}. Total pages: ${totalPages}`);
     if (pageNumber < 1) return;
     if (pageNumber > totalPages) return;
 
@@ -51,8 +50,20 @@ const AdmStudents = () => {
   }
 
   const handleDelete = (studentId: number) => {
-    // TODO: implement
-    console.log(`Deleting student ${studentId}`);
+    // TODO: add a confirmation popup
+
+    // Optimistic delete (delete student from ui first, then call api)
+    // ui
+    const originalStudents = [...students];
+    setStudents(students.filter( s => s.id !== studentId));
+
+    // api
+    studentService.deleteStudent(studentId)
+      .catch( err => {
+        setError(err.message);
+        setStudents(originalStudents);
+      });
+
   }
 
   const handleEdit = (studentId: number) => {

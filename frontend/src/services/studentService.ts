@@ -22,6 +22,10 @@ class StudentService {
         return { request, cancel: () => controller.abort() }
     }
 
+    deleteStudent(id: number) {
+        return apiClient.delete(`/students/${id}`);
+    }
+
 }
 
 export default new StudentService();

@@ -1,4 +1,4 @@
-from app.db.student_db import get_students, count_students
+from app.db.student_db import get_students, count_students, delete_student_by_id
 from app.models.student import Student
 
 MAX_SIZE = 200
@@ -15,3 +15,14 @@ def get_students_by_filter(filter: str, page: int, limit: int):
     total_students = count_students(filter)
     students = get_students(filter, offset=offset, limit=limit)
     return (total_students, students)
+
+def delete_student(id: int):
+    if id < 0:
+        raise ValueError("Student id mus be greater than 0")
+    
+    affected = delete_student_by_id(id)
+
+    return affected
+    
+
+    

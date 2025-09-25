@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch
 from app.models.student import Student
-from app.services.student_service import get_students_by_filter, MAX_SIZE
+from app.services.student_service import get_students_by_filter, delete_student, MAX_SIZE
 
 @pytest.fixture
 def mock_students():
@@ -49,3 +49,14 @@ def test_get_students_by_filter_ok(mock_students):
             assert total_students == 2
             assert len(students) == 2
 
+def test_delete_student_wrong_id():
+    with pytest.raises(ValueError) as exc_info:
+        delete_student(-1)
+
+    assert str(exc_info.value) == "Student id mus be greater than 0"
+
+def test_delete_student_ok(mock_students):
+    with patch("app.services.student_service.delete_student_by_id", return_value=1):
+        affected = delete_student(10)
+
+    assert affected == 1

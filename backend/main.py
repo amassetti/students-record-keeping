@@ -3,6 +3,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 #from routers import users, students, teachers, grades
 from app.routers import users, students
+from app.utils.loggin_config import setup_logging
+import logging
+
+setup_logging()
+logger = logging.getLogger("main")
+
+logger.info("Application starting up...")
 
 app = FastAPI()
 

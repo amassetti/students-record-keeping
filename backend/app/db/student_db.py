@@ -1,9 +1,10 @@
+import logging
 from app.models.student import Student
 from app.db.mysql_db import get_db_connection, connector
 
 
 def get_students(filter: str, offset: int, limit: int):
-    print(f"Searching students with filter {filter}")
+    logging.debug(f"Searching students with filter {filter}")
 
     try:
         conn = get_db_connection()
@@ -53,7 +54,7 @@ def get_students(filter: str, offset: int, limit: int):
 
 
 def count_students(filter: str) -> int:
-    print(f"Counting students with filter {filter}")
+    logging.debug(f"Counting students with filter {filter}")
 
     try:
         conn = get_db_connection()
@@ -84,6 +85,23 @@ def count_students(filter: str) -> int:
 
         return count
     
+    except connector.Error as e:
+        # Raise the error so the service layer can handle it
+        print(f"Database error: {str(e)}")
+        raise Exception(f"Database error: {str(e)}")
+
+
+def delete_student_by_id(id: int) -> int:
+    logging.debug(f"Deleting student with id {id}")
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM student WHERE student_id = %s", (id,))
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected
     except connector.Error as e:
         # Raise the error so the service layer can handle it
         print(f"Database error: {str(e)}")

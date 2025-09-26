@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query, HTTPException, status
-from app.models.student import Student
-from app.services.student_service import get_students_by_filter, delete_student
+from app.models.student import Student, StudentBase, StudentCreate
+from app.services.student_service import get_students_by_filter, delete_student, add_student
 from typing import Optional
 import math
 
@@ -35,3 +35,13 @@ def delete_student_endpoint(student_id: int):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error")
+    
+@router.post("/", response_model=StudentCreate, status_code=status.HTTP_201_CREATED)
+def create_student(student: StudentBase):
+    try:
+        return add_student(student)
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create student"
+        )

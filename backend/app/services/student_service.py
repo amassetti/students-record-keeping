@@ -1,5 +1,5 @@
 from app.db.student_db import get_students, count_students, delete_student_by_id
-from app.models.student import Student
+from app.models.student import Student, StudentBase, StudentCreate
 
 MAX_SIZE = 200
 
@@ -25,4 +25,5 @@ def delete_student(id: int):
     return affected
     
 
-    
+def add_student(student: StudentBase) -> StudentCreate:
+    return None

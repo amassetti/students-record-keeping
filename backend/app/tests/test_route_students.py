@@ -2,9 +2,25 @@ import pytest
 from fastapi.testclient import TestClient
 from main import app
 from unittest.mock import patch
-from app.models.student import Student
+from app.models.student import Student, StudentCreate, StudentBase
 
 client = TestClient(app)
+
+@pytest.fixture
+def mock_student_base():
+    return StudentBase(
+        first_name="Pepe",
+        last_name="Lui",
+        email="test@gmail.com",
+        ppsn="123456"
+    )
+
+@pytest.fixture
+def mock_student_create(mock_student_base: StudentBase):
+    return StudentCreate(
+        id=1,
+        **mock_student_base.model_dump()
+    )
 
 @pytest.fixture
 def mock_students():
@@ -46,5 +62,13 @@ def test_delete_student():
         response = client.delete(
             "/students/1"
         )
-
         assert response.status_code == 200
+
+
+def test_add_student(mock_student_create, mock_student_base):
+    with patch("app.routers.students.add_student", return_value=mock_student_create):
+        response = client.post(
+            "/students",
+            json=mock_student_base.model_dump()
+        )
+        assert response.status_code == 201

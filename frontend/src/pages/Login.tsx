@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { User } from "../services/userService";
@@ -6,11 +6,15 @@ import { User } from "../services/userService";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  //const [user, setUser] = useState<User>();
-
-  const { user, login } = useAuth();
+  const { user, login, error } = useAuth();
   const navigate = useNavigate();
+
+  // to navigate to /dashboard once login is ok
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,10 +26,7 @@ const Login = () => {
       role: null
     }
 
-    // For now, any email/password works
     login(userToLogin);
-
-    if (user) navigate("/dashboard");
     
   };
 

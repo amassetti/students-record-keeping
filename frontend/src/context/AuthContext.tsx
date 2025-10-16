@@ -15,17 +15,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
 
   const login = async (user: User) => {
-    setError(null);
-    const validatedUser: User = await userService.validateUser(user);
-    const isValidUser = validatedUser.username !== null
-    console.log(`Is valid user: ${isValidUser}`);
-    let message;
-    if (isValidUser) {
-        setUser(validatedUser);
-    } else {
-        // handle error
-        setUser(null);
-        setError("Invalid username or password");
+    try {
+      setError(null);
+      const validatedUser: User = await userService.validateUser(user);
+      let message;
+      if (validatedUser && validatedUser.username) {
+          setUser(validatedUser);
+      } else {
+          // handle error
+          setUser(null);
+          setError("Invalid username or password");
+      }
+    } catch (err: any) {
+      // Catch backend or network errors
+      console.error("Login error:", err);
+      setUser(null);
+      setError(""+err)
     }
 
   };

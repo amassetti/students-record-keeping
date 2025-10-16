@@ -29,10 +29,20 @@ class UserService {
             const dbUser: User = res.data;
             console.log(dbUser);
             return dbUser;
-        } catch (err) {
+        } catch (err: any) {
             console.error("Validation failed", err);
-            const emptyUser: User = {id: null, username: null, password: null, role: null};
-            return emptyUser;
+            console.log(err)
+            // If backend returned a 4xx/5xx, rethrow with a readable message
+            if (err.response) {
+                const message =
+                    err.response.data?.detail || "Invalid username or password";
+                throw new Error(message);
+            } else if (err.request) {
+                throw new Error("Server unreachable. Please try again later.");
+            } else {
+                throw new Error("Unexpected error during login.");
+            }
+
         }
     }
 

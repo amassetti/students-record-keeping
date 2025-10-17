@@ -1,32 +1,40 @@
-name: gti-record-keeping
+name: students-record-keeping
 services:
-  frontend:
-    build: ./gti-frontend
-    ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/app
-  
   backend:
-    build: ./gti-service-layer
+    build: ./backend
+    container_name: backend
     ports:
-      - 8080:8080
+      - "8000:8000"
+    #environment:
+    #  - DATABASE_URL=mysql+pymysql://root:root@db:3306/students
     environment:
-      - spring.profiles.active=docker
+      # point to your local DB
+      - DATABASE_HOST=host.docker.internal
+      - DATABASE_PORT=3306
+      - DATABASE_USER=gti_record_keeping
+      - DATABASE_PASSWORD=Asd$123!
+      - DATABASE_NAME=gti_record_keeping_v2
+  #    depends_on:
+  #      - db
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
     depends_on:
-      - db
+      - backend
+#  db:
+#    image: mysql:8
+#    container_name: db
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: students
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - mysql_data:/var/lib/mysql
 
-  db:
-    image: mysql
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: gti_record_keeping_v2
-      MYSQL_USER: gti_record_keeping
-      MYSQL_PASSWORD: Asd
-    volumes:
-      - gti-record-keeping:/var/lib/mysql
-
-volumes:
-  gti-record-keeping:
+#volumes:
+#  mysql_data:

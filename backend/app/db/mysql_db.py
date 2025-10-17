@@ -1,13 +1,14 @@
 import mysql.connector
+import os
 
 def get_db_connection():
     # connect
     conn = mysql.connector.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="gti_record_keeping",
-        password="Asd$123!",
-        database="gti_record_keeping_v2"
+        host=os.getenv("DATABASE_HOST", "127.0.0.1"),
+        port=int(os.getenv("DATABASE_PORT", "3306")),
+        user=os.getenv("DATABASE_USER", "gti_record_keeping"),
+        password=os.getenv("DATABASE_PASSWORD", "Asd$123!"),
+        database=os.getenv("DATABASE_NAME", "gti_record_keeping_v2")
     )
     return conn
 

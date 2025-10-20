@@ -7,7 +7,7 @@ def get_db_connection():
         host=os.getenv("DATABASE_HOST", "127.0.0.1"),
         port=int(os.getenv("DATABASE_PORT", "3306")),
         user=os.getenv("DATABASE_USER", "gti_record_keeping"),
-        password=os.getenv("DATABASE_PASSWORD", "Asd$123!"),
+        password=os.getenv("DATABASE_PASSWORD", "TBD!"),
         database=os.getenv("DATABASE_NAME", "gti_record_keeping_v2")
     )
     return conn

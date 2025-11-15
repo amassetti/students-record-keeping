@@ -28,3 +28,6 @@ Main funcionality by role are:
 ### docker compose
 
 docker-compose up --build
+
+# git methodology
+branching from main into a feature branch, commit,  push and PR

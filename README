@@ -1,11 +1,30 @@
-# Student record system
+### Student record system
 
-# project structure
+Application that allows to keep records of students, teachers, subjects and students grades.
+Main funcionality by role are:
 
-- backend: python
+## Admin Role
+
+    - Register teacher
+    - Register subject
+    - Register course
+    - Register student
+    - Enroll student in course
+    - Reports
+
+## Teacher Role
+
+    - Browse student history
+    - Register grade for student
+    - Register grade for a class
+    - Reports
+
+### Project structure and tech stack
+
+- backend: python + fastapi
 - frontend: React + Typescript
-- database: db scripts
+- database: mysql
 
-# docker compose
+### docker compose
 
-TODO
+docker-compose up --build

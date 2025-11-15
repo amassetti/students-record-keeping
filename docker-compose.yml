@@ -31,8 +31,8 @@ services:
       - DATABASE_USER=gti_record_keeping
       - DATABASE_PASSWORD=TBD!
       - DATABASE_NAME=gti_record_keeping_v2
-  #    depends_on:
-  #      - db
+    depends_on:
+      - db
 
   frontend:
     build: ./frontend

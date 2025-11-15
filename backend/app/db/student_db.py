@@ -1,18 +1,20 @@
 import logging
 from app.models.student import Student
-from app.db.mysql_db import get_db_connection, connector
+from app.db.mysql_db import get_db_connection, connector, get_engine
+from sqlalchemy import text
 
 
 def get_students(filter: str, offset: int, limit: int):
-    logging.debug(f"Searching students with filter {filter}")
+    logging.info(f"Searching students with filter {filter}")
 
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+
+        eng = get_engine()
+        #conn = get_db_connection()
+        #cursor = conn.cursor()
 
         # run a query with parameterized SQL to prevent SQL injection
-        cursor.execute(
-            '''
+        query = '''
             SELECT 
                 s.student_id,
                 c.course_code,
@@ -26,23 +28,42 @@ def get_students(filter: str, offset: int, limit: int):
                 ON s.student_id = sc.student_id
             LEFT JOIN course c
                 ON sc.course_id = c.course_id
-            WHERE ( s.first_name LIKE %s
-            OR s.last_name LIKE %s)
-            OR %s IS NOT NULL
-            LIMIT %s OFFSET %s;
-            ''',
-            (filter, filter, filter, limit, offset)
-        )
+            '''
+        
+        params = {}
+
+        if filter:
+            like_value = f"%{filter}%"
+            query += f'''WHERE s.first_name LIKE :filter
+                    OR s.last_name LIKE :filter
+            '''
+
+            params["filter"] = like_value
+        
+        # Add pagination
+        query += f" LIMIT :limit OFFSET :offset"
+
+        params["limit"] = limit
+        params["offset"] = offset
+
+        with eng.connect() as conn:
+            result = conn.execute(text(query), params )
+            rows = result.fetchall()
+
+        print(rows)
+
+        #cursor.execute(query, params)
 
         # fetch results
         students = []
-        for row in cursor.fetchall():
+        for row in rows:
+            print(row[0])
             student = Student(id=row[0], course_code=row[1], course_name=row[2], first_name=row[3], last_name=row[4], email=row[5], ppsn=row[6])
             students.append(student)
 
         # cleanup
-        cursor.close()
-        conn.close()
+        #cursor.close()
+        #conn.close()
 
         if students:
             return students
